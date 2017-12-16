@@ -101,7 +101,7 @@ write about Sharp module
 - **[Ashikur Rahman](http://www.ashikrahman.info)**
 - **Md Jobayer Islam**
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/jobayerccj/simple-cms/graphs/contributors) who participated in this project.
 
 ## License
 
