@@ -99,7 +99,7 @@ write about Sharp module
 ## Authors
 
 - **[Ashikur Rahman](http://www.ashikrahman.info)**
-- **Md Jobayer Islam**
+- **[Md Jobayer Islam](http://jobayerislam.com/)**
 
 See also the list of [contributors](https://github.com/jobayerccj/simple-cms/graphs/contributors) who participated in this project.
 
