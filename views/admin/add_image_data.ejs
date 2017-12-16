@@ -1,0 +1,14 @@
+<div style="width: 400px">
+<form method="POST" id="add_image_data" action="">
+Title<br/>
+<input type="text" name="image_title" value="<%= image.title %>" style="width:100%" /><br /><br/>
+Description<br/>
+<input type="text" name="image_description" value="<%= image.description %>" style="width:100%" /><br />
+<br />
+
+
+<input type="hidden" name="image_name" value="<%= image.name %>" />
+<input type="hidden" name="album_id" value="<%= album_id %>" />
+<input type="submit" class="btn btn-success pull-right" name="submit" value="Save" />
+</form>
+</div>

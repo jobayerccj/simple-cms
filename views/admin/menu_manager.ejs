@@ -1,0 +1,244 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title pull-right"><a href="/admin/menu_manager/add">+ Add Menu</a></h3>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+
+        <table class="table table-bordered table-hover DataTable">
+          <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+              <%
+                var total_menu = menus.length;
+                for(var i=0; i < total_menu; i++){
+              %>
+          <tr>
+            <td><%= i+1 %></td>
+            <td><a href="/admin/menu_manager/detail?id=<%= menus[i].id %>"><%= menus[i].name %></a></td>
+            <td>
+              <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Action
+                  <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
+                      <li><a href="javascript:void(0)" onclick='showAddMenuItemModal("<%= menus[i].id %>")'>Add Item</a></li>
+                      <li><a href="/admin/menu_manager/detail?id=<%= menus[i].id %>">Detail</a></li>
+                      <li><a href="javascript:void(0)" onclick='showEditMenuModal("<%= menus[i].id %>", "<%= menus[i].name %>")'>Edit</a></li>
+                      <li><a href="javascript:void(0)" onclick="delete_menu('<%= menus[i].id %>')">Delete</a></li>
+                  </ul>
+              </div>
+          </td>
+          </tr>
+          <% } %>
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Action</th>
+
+          </tr>
+          </tfoot>
+        </table>
+
+          <div class="modal fade" tabindex="-1" role="dialog" id="AddMenuItemModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form id="menuItemAddForm1">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Add new item to menu</h4>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" name="menu_id" id="menu_id">
+                  <div class="form-group">
+                    <label >Page Name</label>
+                    <input type="text" name="name" placeholder="Name" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label >Page link</label>
+                    <input type="text" name="link" placeholder="Write full url if it's an external link" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label >Select parent page</label>
+                    <select name="parent_id" class="form-control" id="parent_menu_dropdown">
+                      <option value="0">Select Parent</option>
+                    </select>
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="insert_menu_item" class="btn btn-info">Insert</button>
+                </div>
+              </form>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+
+          <div class="modal fade" tabindex="-1" role="dialog" id="editMenuModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form id="menuEditForm1">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Edit menu</h4>
+                </div>
+                <div class="modal-body">
+
+                  <div class="form-group">
+                    <label >Menu Name</label>
+                    <input type="hidden" name="editted_menu_id" id="editted_menu_id">
+
+                    <input type="text" name="name" id="editted_name" placeholder="Name" class="form-control" required>
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="edit_menu" class="btn btn-info">Edit</button>
+                </div>
+              </form>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+    </div>
+    </div>
+<script>
+  function showAddMenuItemModal(menu_id){
+    $("#menu_id").val(menu_id);
+    //$('#AddMenuItemModal').modal('show');
+
+    var options = '<option value="0">Select Parent</option>';
+
+    $.ajax({
+      data: {menu_id: menu_id},
+      url: '/admin/menu_manager/getParentMenuItem',
+      type: "POST",
+      success: function(results){
+        if(results.length){
+          menu_items = results[0].pages;
+          $(menu_items).each(function(i, menu_item){
+
+            options += '<option>' + menu_item.name + '</option>';
+          });
+
+          $("#parent_menu_dropdown").html(options);
+        }
+
+        $('#AddMenuItemModal').modal('show');
+
+      }
+    });
+  }
+
+  function showEditMenuModal(menu_id,menu_name){
+
+    $("#editted_menu_id").val(menu_id);
+    $("#editted_name").val(menu_name);
+    $('#editMenuModal').modal('show');
+  }
+
+  $("#insert_menu_item").on("click", function(){
+
+    $.ajax({
+      data: $("#menuItemAddForm1").serialize(),
+      url: '/admin/menu_manager/addMenuItem',
+      type: "POST",
+      success: function(results){
+        if(results == 'success'){
+          $('#AddMenuItemModal').modal('hide');
+          swal({
+            title: "Menu item successfully added",
+            type: "success",
+            text: ""
+          });
+        }
+        else{
+          swal({
+            title: "something went wrong, please try again.",
+            type: "warning",
+            text: ""
+          });
+        }
+
+      }
+    })
+  });
+
+  $("#edit_menu").on("click", function(){
+
+    $.ajax({
+      data: $("#menuEditForm1").serialize(),
+      url: '/admin/menu_manager/editMenu',
+      type: "POST",
+      success: function(results){
+        if(results == 'success'){
+          $('#editMenuModal').modal('hide');
+          swal({
+            title: "Menu successfully updated",
+            type: "success",
+            text: ""
+          },
+        function(){
+          location.reload();
+        });
+        }
+        else{
+          swal({
+            title: "something went wrong, please try again.",
+            type: "warning",
+            text: ""
+          });
+        }
+
+      }
+    })
+  });
+
+  function delete_menu(menu_id){
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this menu!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, delete it!",
+      closeOnConfirm: false,
+      html: false
+    }, function(){
+        $.ajax({
+          data:{id: menu_id },
+          url: '/admin/menu_manager/delete_menu',
+          type: "DELETE",
+          success: function(results){
+            swal({
+              title: "Menu successfully deleted!",
+              type: "success",
+              text: ""
+            }, function(){
+              location.reload();
+            });
+
+          },
+          error: function(err){
+            console.log("error occur");
+            console.log(err);
+          }
+        });
+    });
+  }
+</script>

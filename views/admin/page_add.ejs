@@ -1,0 +1,188 @@
+<link rel="stylesheet" href="/assets/admin/dropzone/dropzone.css">
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-info">
+      <div class="box-header">
+        <!-- tools box -->
+        <div class="pull-right box-tools">
+          <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fa fa-minus"></i></button>
+          <!--<button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+            <i class="fa fa-times"></i></button>-->
+        </div>
+        <!-- /. tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body pad">
+        <p class="text-danger" id="error_list1"><% if(typeof error_msg != 'undefined'){ %> <%= error_msg %> <% } %></p>
+        <form method="POST" action="/admin/page_manager/add" enctype="multipart/form-data" id="page_add_form1">
+          <div class="form-group">
+            <label for="title">Page title:</label>
+            <input type="text" class="form-control" name="title" id="page_title1">
+          </div>
+
+          <div class="form-group">
+            <label for="alias">Alias:</label>
+            <input type="text" class="form-control" name="alias">
+          </div>
+
+          <div class="form-group">
+            <label for="category">Select Category:</label>
+            <select class="form-control" name="category">
+              <option>Select Category</option>
+              <%
+                var total_cat = categories.length;
+                for(var i = 0; i < total_cat; i++){
+              %>
+              <option><%= categories[i].category_name %></option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Page Detail:</label>
+            <textarea class="form-control" name="description" id="editor1" rows="10" cols="80">
+              Write page description
+            </textarea>
+          </div>
+
+          <div id="mydropzone" class="form-group dropzone">
+            <div class="dz-default dz-message"></div>
+              Upload Featured Image
+            <div class="dropzone-previews"></div>
+          </div>
+
+            <div class="form-group"><button type="submit" class="btn btn-success" id="submit_page_add">Save</button></div>
+
+        </form>
+      </div>
+    </div>
+    <!-- /.box -->
+    </div>
+    </div>
+
+    <script src="/assets/admin/dropzone/dropzone.js"></script>
+
+    <script >
+
+      $('input[name=title]').change(function() {
+        var title = $('input[name=title]').val();
+        var alias = title.replace(/[\s]|[,]/g,"-");
+        $('input[name=alias]').val(alias);
+      });
+
+$(document).ready(function(){
+    CKEDITOR.replace('editor1');
+  //$("div#mydropzone").dropzone({ url: "/file/post" });
+
+    //$("#page_add_form1").append('<div class="form-group"><button type="submit" class="btn btn-success" id="submit_page_add">Save</button></div>');
+    Dropzone.autoDiscover = false;
+
+    var dropZone = $("div#mydropzone").dropzone({
+        url: "/admin/page_manager/add",
+        autoProcessQueue: false,
+        previewsContainer: ".dropzone-previews",
+        uploadMultiple: false,
+        maxFiles: 1,
+        maxFileSize: 1000,
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif",
+
+        init: function() {
+            /*var dz = this;
+
+            $("#submit_page_add").on('click',function(e) {
+               e.preventDefault();
+               dz.processQueue();
+            });*/
+
+
+
+            var dz = this;
+            $("#submit_page_add").on('click',function(e) {
+
+              e.preventDefault();
+              e.stopPropagation();
+
+              var form = $(this).closest('form#page_add_form1');
+
+              if (dz.getQueuedFiles().length > 0) {
+                  //alert('test1');
+                  dz.processQueue();
+              } else {
+                  //alert('test2');
+                  $.ajax({
+                    type: "POST",
+                    data: $("#page_add_form1").serialize(),
+                    url: "/admin/page_manager/add",
+                    success: function(results){
+                      console.log(results);
+
+                      if(results == 'success'){
+                        window.location = '/admin/page_manager/list';
+                      }
+                      else{
+                        var errors = JSON.parse(results);
+                        var errors_li = "";
+                        errors.forEach(function(error){
+                          errors_li += '<li>' + error['msg'] +'</li>';
+                        });
+
+                        $("#error_list1").html('<ul>'+ errors_li +'</ul>');
+
+                      }
+                    }
+                  });
+
+                  //$("#page_add_form1").submit();
+
+                  //dz.uploadFiles([]); //send empty
+              }
+            });
+
+        },
+        sending: function(data, xhr, formData){
+
+          formData.append('title', $('input[name="title"]').val());
+          formData.append('alias', $('input[name="alias"]').val());
+          formData.append('category', $('select[name="category"]').val());
+          formData.append('description', CKEDITOR.instances['editor1'].getData());
+        },
+        success: function(results, callback){
+
+          if(callback == 'success'){
+            window.location = '/admin/page_manager/list';
+          }
+          else{
+            var errors = JSON.parse(callback);
+            var errors_li = "";
+            errors.forEach(function(error){
+              errors_li += '<li>' + error['msg'] +'</li>';
+            });
+
+            $("#error_list1").html('<ul>'+ errors_li +'</ul>');
+            this.removeAllFiles(true);
+          }
+
+        }
+
+    });
+
+
+    /*$('#submit_page_add').on("click", function (e) {
+          alert('test');
+          e.preventDefault();
+          e.stopPropagation();
+
+          var form = $(this).closest('form#page_add_form1');
+
+          if (dropZone.getQueuedFiles().length > 0) {
+              dropZone.processQueue();
+          } else {
+              dropZone.uploadFiles([]); //send empty
+          }
+
+      });*/
+ });
+
+  </script>

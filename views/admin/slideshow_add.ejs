@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="/assets/admin/dropzone/dropzone.css">
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-info">
+      <div class="box-header">
+        <!-- tools box -->
+        <div class="pull-right box-tools">
+          <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fa fa-minus"></i></button>
+          <!--<button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+            <i class="fa fa-times"></i></button>-->
+        </div>
+        <!-- /. tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body pad">
+        <p class="text-danger" id="error_list1"><% if(typeof error_msg != 'undefined'){ %> <%= error_msg %> <% } %></p>
+        <form method="POST" action="/admin/slideshow_manager/add" enctype="multipart/form-data" id="slideshow_add_form1">
+          <div class="form-group">
+            <label for="title">Slideshow title:</label>
+            <input type="text" class="form-control" name="title" id="slideshow_title1">
+          </div>
+
+          <div id="mydropzone" class="form-group dropzone">
+            <div class="dz-default dz-message"></div>
+              Upload Featured Image
+            <div class="dropzone-previews"></div>
+          </div>
+
+            <div class="form-group"><button type="submit" class="btn btn-success" id="submit_slideshow_add">Save</button></div>
+
+        </form>
+      </div>
+    </div>
+    <!-- /.box -->
+    </div>
+    </div>
+
+    <script src="/assets/admin/dropzone/dropzone.js"></script>
+
+    <script >
+
+$(document).ready(function(){
+
+  //$("div#mydropzone").dropzone({ url: "/file/post" });
+
+    //$("#page_add_form1").append('<div class="form-group"><button type="submit" class="btn btn-success" id="submit_page_add">Save</button></div>');
+    Dropzone.autoDiscover = false;
+
+    $("div#mydropzone").dropzone({
+        url: "/admin/slideshow_manager/add",
+        autoProcessQueue: false,
+        previewsContainer: ".dropzone-previews",
+        uploadMultiple: false,
+        maxFiles: 1,
+        maxFileSize: 1000,
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif",
+
+        init: function() {
+            var dz = this;
+
+            $("#submit_slideshow_add").on('click',function(e) {
+               e.preventDefault();
+               dz.processQueue();
+            });
+
+
+        },
+        sending: function(data, xhr, formData){
+
+          formData.append('title', $('input[name="title"]').val());
+
+        },
+        success: function(results, callback){
+
+          if(callback == 'success'){
+            window.location = '/admin/slideshow_manager/list';
+          }
+          else{
+            var errors = JSON.parse(callback);
+            var errors_li = "";
+            errors.forEach(function(error){
+              errors_li += '<li>' + error['msg'] +'</li>';
+            });
+
+            $("#error_list1").html('<ul>'+ errors_li +'</ul>');
+            this.removeAllFiles(true);
+          }
+
+        }
+
+    });
+ });
+
+  </script>

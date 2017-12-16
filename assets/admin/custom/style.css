@@ -1,0 +1,37 @@
+.zero-padding{
+  padding:0 !important;
+}
+
+.zero-left-padding{
+  padding-left: 0 !important;
+}
+.buttonEdit {
+    position: absolute;
+    top: 1px;
+    left: 16px;
+    padding: 5px;
+    box-shadow: 1px 1px 1px #ccc;
+    background-color: #FFF;
+  }
+
+  #sortable{
+    padding:0px;
+    margin-top: 20px;
+  }
+
+  #sortable .handle {
+      position: absolute;
+      top: 1px;
+      right: 16px;
+      background-color: rgb(255, 255, 255);
+      cursor: move;
+      box-shadow: rgb(0, 0, 0) -1px 1px 2px;
+      padding: 3px;
+  }
+
+  #sortable>li {
+    text-align: center;
+    height: 150px;
+    margin-bottom: 25px;
+    list-style: none;
+}

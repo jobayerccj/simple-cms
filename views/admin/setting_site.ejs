@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="/assets/admin/dropzone/dropzone.css">
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-info">
+      <div class="box-header">
+        <!-- /. tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body pad">
+        <p class="text-danger"><% if(typeof error_msg != 'undefined'){ %> <%= error_msg %> <% } %></p>
+        <form method="POST" action="/admin/settings/save">
+          <div class="col-md-12">
+                <div class="page-header">
+                    <h4><b><i class="icon-map-marker"></i> Address and Location</b></h4>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_address">Contact Address</label>
+                    <div class="controls">
+                        <input type="text" name="settings_contact_address" id="contact_address" class="form-control" value="<%= settings.contact_address %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_phone_1">Contact Phone 1</label>
+                    <div class="controls">
+                        <input type="text" name="settings_contact_phone_1" id="contact_phone_1" class="form-control" value="<%= settings.contact_phone_1 %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_phone_2">Contact Phone 2</label>
+                    <div class="controls">
+                        <input type="text" name="settings_contact_phone_2" id="contact_phone_2" class="form-control" value="<%= settings.contact_phone_2 %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_email">Contact Email</label>
+                    <div class="controls">
+                        <input type="text" name="settings_contact_email" id="contact_email" class="form-control" value="<%= settings.contact_email %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_page_text">Contact Page Text</label>
+                    <div class="controls">
+                        <textarea name="settings_contact_page_text" id="contact_page_text" class="form-control"><%= settings.contact_page_text %></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="contact_page_map">Google Map Embed Code</label>
+                    <div class="controls">
+                        <textarea name="settings_contact_page_map" rows="4" id="contact_page_map" class="form-control"><%= settings.contact_page_map %></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                                <div class="page-header">
+                                    <h4><b><i class="icon-link"></i> Social Media Link</b></h4>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="rss_link">RSS Link</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_rss_link" id="rss_link" class="form-control" value="<%= settings.rss_link %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="twitter_link">Twitter Link</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_twitter_link" id="twitter_link" class="form-control" value="<%= settings.twitter_link %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="facebook_link">Facebook Link</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_facebook_link" id="facebook_link" class="form-control" value="<%= settings.facebook_link %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="youtube_link">Youtube Link</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_youtube_link" id="youtube_link" class="form-control" value="<%= settings.youtube_link %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="googleplus_link">Google Plus</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_googleplus_link" id="googleplus_link" class="form-control" value="<%= settings.googleplus_link %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="linkedin_link">Linkedin</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_linkedin_link" id="linkedin_link" class="form-control" value="<%= settings.linkedin_link %>">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="page-header">
+                                    <h4><b><i class="icon-info-sign"></i> Custom Information</b></h4>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="slogan">Site Slogan</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_slogan" id="home_banner_url" class="form-control" value="<%= settings.slogan %>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label" for="slogan">Site Logo</label>
+                                    <div class="controls">
+                                        <div id="mydropzone" class="form-group dropzone">
+                                          <div class="dz-default dz-message">Upload Logo</div>
+                                          
+                                          <div class="dropzone-previews">
+                                            <div id="previous_image1">
+                                            <img src="/uploads/<%= settings.logo %>" alt="logo" style="width:120px;">
+                                          </div>
+                                          </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label" for="copywrite_text">Copy write Text</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_copywrite_text" id="copywrite_text" class="form-control" value="<%= settings.copywrite_text %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="developed_by_text">Developed By Text</label>
+                                    <div class="controls">
+                                        <input type="text" name="settings_developed_by_text" id="developed_by_text" class="form-control" value="<%= settings.developed_by_text %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="custom_js">Custom JS (Without Script Tags)</label>
+                                    <div class="controls">
+                                        <textarea name="settings_custom_js" rows="6" id="custom_js" class="form-control"><%= settings.custom_js %></textarea>
+                                    </div>
+                                </div>
+
+                                <input type="submit" value="save" class="btn btn-success  pull-right">
+                            </div>
+        </form>
+      </div>
+    </div>
+    <!-- /.box -->
+    </div>
+    </div>
+<script src="/assets/admin/dropzone/dropzone.js"></script>
+<script>
+Dropzone.autoDiscover = false;
+$("div#mydropzone").dropzone({
+    url: "/admin/settings/upload_logo",
+    previewsContainer: ".dropzone-previews",
+    uploadMultiple: false,
+    maxFiles: 1,
+    maxFileSize: 1000,
+    addRemoveLinks: false,
+    acceptedFiles: "image/jpeg,image/png,image/gif",
+    maxfilesreached: function(){
+      $("#previous_image1").html("");
+      //alert('test');
+    }
+  }
+);
+
+</script>

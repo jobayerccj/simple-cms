@@ -1,0 +1,213 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-info">
+      <div class="box-header">
+        <!-- /. tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body pad">
+        <p class="text-danger"><% if(typeof error_msg != 'undefined'){ %> <%= error_msg[0]['msg'] %> <% } %></p>
+        <form method="POST" action="" enctype="multipart/form-data">
+          <div class="col-md-12">
+            <div class="col-md-8">
+                <label for="title">Album:</label>
+              <div class="input-group">
+
+                <select class="form-control" name="album_name" id="album">
+                  <% albums.forEach(function(album){ %>
+                  <option value="<%= album.id %>" <% if(album.id == album_id){ %>selected<% } %>><%= album.album_name %></option>
+                  <% }); %>
+                </select>
+                <span class="input-group-btn">
+
+                  <button type="button" id="upload_modal" class="btn btn-danger"  data-toggle="modal" data-target="#imgUploadModal">Open Image Uploader</button>
+                </span>
+              </div>
+
+              <div style="margin-top: 10px">
+                <span style="margin-right: 20px;"><strong>Category:</strong> <%= album_detail.category_name %></span>
+                <span><strong>Total Images:</strong> <%= album_detail.images.length %></span>
+              <div>
+
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="imgUploadModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Upload Images to Album</h4>
+      </div>
+      <div class="modal-body">
+        <div id="mydropzone" class="form-group dropzone needsclick dz-clickable">
+          <div class="dz-default dz-message">Upload Images</div>
+
+          <div class="dropzone-previews"></div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="start_upload" class="btn btn-info">Start Upload</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+            <div class="col-md-12">
+
+              <ul id="sortable">
+                <% album_detail.images.forEach(function(image){ %>
+
+                  <li class="ui-state-default col-md-3 sortimage" id="<%= image.name %>">
+                          <div class="item" style="text-align: center; border: 1px solid #ddd">
+                              <a  data-fancybox="gallery"  title="Photo" href="/uploads/images/<%= image.name %>">
+                                  <div class="zoom">
+                                      <img src="/uploads/images/thumbs/<%= image.name %>" style="max-width:100%;"/>
+                                      <div class="zoom-icon"></div>
+                                  </div>
+                              </a>
+
+													<div class="buttonEdit green-bg">
+														<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fa fa-bars"></i></a>
+														<ul class="dropdown-menu" role="menu">
+															<li><a data-fancybox data-type="ajax" href="javascript:;" data-src="/admin/image_manager/add_image_data?image_name=<%= image.name %>&album_id=<%= album_id %>" class="fancybox fancybox.ajax">Add Data</a></li>
+															<li><a href="#" imgname="<%= image.name %>" class="icon deletealbumImage">Delete</a></li>
+														</ul>
+													</div>
+													<img class="handle" src="/assets/admin/dist/img/handle.png" />
+                              </div>
+                          </li>
+                <% }) %>
+              </ul>
+              </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+    <!-- /.box -->
+    </div>
+    </div>
+
+<link rel="stylesheet" href="/assets/admin/dropzone/dropzone.css">
+  <script src="/assets/admin/dropzone/dropzone.js"></script>
+
+    <script>
+
+    $(document).ready(function(){
+
+        Dropzone.autoDiscover = false;
+
+        $("div#mydropzone").dropzone({
+            url: "/admin/image_manager/upload",
+
+            autoProcessQueue: false,
+            previewsContainer: ".dropzone-previews",
+            uploadMultiple: true,
+            addRemoveLinks: true,
+            parallelUploads: 10,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            resizeWidth: <%= category.bigger_img_width %>,
+            resizeHeight: <%= category.bigger_img_height %>,
+            params: {album_id: "<%= album_id %>",'thumb_img_width': <%= category.thumb_img_width %>, 'thumb_img_height': <%= category.thumb_img_height %>},
+            queuecomplete: function(){
+
+              location.reload();
+            },
+            complete: function(file){
+
+              var dz = this;
+              dz.removeFile(file);
+            },
+            success: function(file, response){
+
+            }
+        });
+
+        $("#start_upload").on("click",function(e){
+          e.preventDefault();
+          var myDropzone = Dropzone.forElement("div#mydropzone");
+          myDropzone.processQueue();
+        });
+
+        $( "#sortable" ).sortable({
+                 update: function(event, ui){
+                       var order = $(this).sortable('toArray');
+                            //alert(order);
+
+                            $.ajax({
+                                url: "/admin/image_manager/sort_images",
+                                type:'POST',
+                                data: {'images': JSON.stringify(order), 'album_id': "<%= album_id %>"},
+                                success: function(data)
+                                {
+                                  //alert(data);
+                                },
+                                error: function(data)
+                                {
+                                    //alert("not done");
+                                }
+                            });
+
+                    },
+
+                    forcePlaceholderSize: true,
+                    opacity: 0.5,
+        			handle: '.handle'
+            });
+
+     });
+
+
+    $("#album").on("change",function(e){
+      var album_id_selected = $(this).val();
+      location.href = "/admin/image_manager/upload_images?id="+album_id_selected;
+    });
+
+    $(".deletealbumImage").on("click",function(e){
+      e.preventDefault();
+
+      var imgname = $(this).attr('imgname');
+      var imgcontainer = $(this).parents("li.sortimage");
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this category!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: true,
+        html: false
+      }, function(){
+          $.ajax({
+            data:{imgname: imgname, album_id: "<%= album_id %>" },
+            url: '/admin/image_manager/delete_image',
+            type: "post",
+            success: function(results){
+              if(results == 'ok'){
+                imgcontainer.remove();
+              }
+            },
+            error: function(err){
+              console.log("error occur");
+              console.log(err);
+            }
+          });
+      });
+    });
+
+    $(document).on("submit","#add_image_data",function(e){
+      e.preventDefault();
+      $.ajax({
+        url: "/admin/image_manager/add_image_data",
+        type: "post",
+        data: $(this).serialize(),
+        success: function(result){
+
+        },
+			complete: function(result){
+				$.fancybox.close( true );
+			}
+      });
+    })
+    </script>

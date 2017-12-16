@@ -1,0 +1,38 @@
+{
+  "name": "simple-cms",
+  "version": "1.0.0",
+  "description": "Simple CMS using Node and Mongo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ashikbd@bitbucket.org/jobayer34/simple-cms.git"
+  },
+  "keywords": [
+    "simple-cms",
+    "mongo",
+    "cms",
+    "nosql",
+    "cms"
+  ],
+  "author": "Ashikur Rahman & Jobayer Islam",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/jobayer34/simple-cms#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "connect-mongo": "^1.3.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "express-validator": "^3.2.1",
+    "mongoose": "^4.11.6",
+    "mongoose-unique-validator": "^1.0.5",
+    "multer": "^1.3.0",
+    "nodemailer": "^4.4.0",
+    "resizer": "0.0.6",
+    "sharp": "^0.18.4"
+  }
+}

@@ -1,0 +1,14 @@
+*.DS_Store
+*.log
+*.zip
+.idea
+.sass-cache/
+/nbproject/
+/nbproject/private/
+/node_modules/
+/bower_components/
+/assets/admin/uploads
+/assets/admin/uploads/slideshow
+ad.js
+TODO
+test.html
