@@ -73,7 +73,11 @@ You can create menu from this module.
 
 ##### 4. User Manager 
 
+You can create new administrator from this menu, also can change/delete existing user. 
+
 ##### 5. Settings
+
+There are two sub menus in this section for site settings & email settings. From site settings menu, you can add different information about your site like slogan, logo, copyright text etc. Using email settings menu, you can update email information related with contact form(smtp server, email address with password, port number etc)
 
 ## Frontend & REST API
 
@@ -94,7 +98,16 @@ Necessary changes in configuration file. + link that will help user to upload th
 
 ## Possible error & Troubleshooting
 
-write about Sharp module
+- If you face any problem while installing sharp, please install below mentioned things step by step - 
+
+  a) sudo npm install node-gyp -g
+  b) sudo apt-get install python
+  c) sudo apt-get install make
+  d) sudo apt-get install g++
+  e) npm install bcrypt --save
+  f) npm install sharp
+
+  ​
 
 ## Authors
 
