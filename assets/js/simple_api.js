@@ -2,7 +2,7 @@
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1"){
   var api_url = "http://localhost:3000/simple_api/";
 }else {
-  var api_url = "http://ec2-34-207-169-217.compute-1.amazonaws.com:3000";
+  var api_url = "http://ec2-34-207-169-217.compute-1.amazonaws.com:3000/simple_api/";
 }
 
 //This function fetches images. input is name of album and category name which is optional
