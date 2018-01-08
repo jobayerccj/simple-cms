@@ -4,6 +4,19 @@ Simple CMS is developed using nodejs and mongodb. We won't say- it is a complete
 
 ## Demo
 
+**Admin Panel**
+
+http://ec2-34-207-169-217.compute-1.amazonaws.com:3000
+
+```
+Email: admin@example.com
+Password: 123456
+```
+
+**Front End**
+
+http://ec2-34-207-169-217.compute-1.amazonaws.com/simple-cms
+
 
 
 ## CMS (Admin Panel)
@@ -87,13 +100,23 @@ We have developed a sample website using a free bootstrap template to demonstrat
 
 This file is the core js file where we put all the ajax calls to communicate with backend REST api. In the backend, the api listener is located in controller/simple_api.js which is using another js file to retrieve data from db (helpers/common.js).
 
-At first you should modify this js file in frontend and change the api url.  
+At first you should modify js file in frontend and change the api url.  
 
 ```
-var api_url = "http://localhost:3000/simple_api/";  //change this as necessary
+var api_url = "http://localhost:3000/simple_api/";  //change this as necessary. don't remove last portion (simple_api) as this is the route of api
 ```
 
-You will see there are number of functions for different purposes
+You will see there are number of functions for different purposes. Comments are provided.
+
+We used separate js files for each pages. Like home.js, gallery.js etc. Each js file is loaded in each page and they use simple_api.js file's function to fetch data and build up that page.
+
+There is also another js file which is commonly loaded in other pages. It contains some common functions. You will find it here : assets/common.js. Change a server_url variable located here.
+
+```
+var server_url = "http://localhost:3000/"; //main url of the node instance
+```
+
+
 
 ## Deployment
 
