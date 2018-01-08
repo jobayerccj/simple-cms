@@ -81,16 +81,19 @@ There are two sub menus in this section for site settings & email settings. From
 
 ## Frontend & REST API
 
-We have used a sample website using a free bootstrap template to demonstrate how you can fetch data using ajax and backend REST api to prepare the site.
+We have developed a sample website using a free bootstrap template to demonstrate how you can fetch data using ajax and backend REST api to prepare the site.
 
-### Sample functions of API (simple_api.js)
+### assets/js/simple_api.js
 
-Explain what these tests test and why
+This file is the core js file where we put all the ajax calls to communicate with backend REST api. In the backend, the api listener is located in controller/simple_api.js which is using another js file to retrieve data from db (helpers/common.js).
+
+At first you should modify this js file in frontend and change the api url.  
 
 ```
-Give an example
-
+var api_url = "http://localhost:3000/simple_api/";  //change this as necessary
 ```
+
+You will see there are number of functions for different purposes
 
 ## Deployment
 
