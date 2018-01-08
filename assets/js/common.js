@@ -2,7 +2,7 @@
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1"){
   var server_url = "http://localhost:3000/";
 }else {
-  var server_url = "//ec2-35-153-200-43.compute-1.amazonaws.com:3000/";
+  var server_url = "http://ec2-34-207-169-217.compute-1.amazonaws.com:3000/";
 }
 
 $(document).ready(function(){
